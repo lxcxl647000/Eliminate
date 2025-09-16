@@ -1,8 +1,8 @@
 import EventManager from "./lib/eventmanager/EventManager";
 import { EventManagerInterface } from "./lib/eventmanager/EventManagerInterface";
+import platform from "./lib/platform/platform";
 import PanelRouter from "./lib/router/PanelRouter";
 import { LocalStorage } from "./lib/storage/LocalStorage";
-import { LocalStorageInterface } from "./lib/storage/LocalStorageInterface";
 
 /**
  * 框架接口
@@ -21,7 +21,12 @@ export interface FrameworkInterface {
     /**
      * 本地缓存键值对存储接口
      */
-    storage: LocalStorageInterface;
+    storage: LocalStorage;
+
+    /**
+     * 平台接口
+     */
+    platform: platform;
 }
 
 /**
@@ -30,5 +35,6 @@ export interface FrameworkInterface {
 export const qc: FrameworkInterface = {
     eventManager: new EventManager(),
     storage: new LocalStorage(),
-    panelRouter: new PanelRouter()
+    panelRouter: new PanelRouter(),
+    platform: new platform(),
 };

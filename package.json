@@ -3,5 +3,9 @@
   "uuid": "3a97a9ae-cf3b-416d-981b-8a46e27b7852",
   "creator": {
     "version": "3.8.6"
+  },
+  "dependencies": {
+    "js-base64": "^3.7.5",
+    "@tbmp/mp-cloud-sdk": "^1.5.10"
   }
 }

@@ -1,40 +1,81 @@
-import { sys } from "cc";
-import { qc } from "../../qc";
-import { LocalStorageInterface } from "./LocalStorageInterface";
+import { sys } from 'cc';
+const shujuid: string = 'xxl'
+type shujuType = number | string | boolean
 
-/**
- * 本地存储管理
- *
- */
-export class LocalStorage implements LocalStorageInterface {
+export class LocalStorage {
     /**
-     * 读取指定key值的记录
-     *
-     * @param key 读取记录key
-     */
-    getItem(key: string): string {
-        let value = sys.localStorage.getItem(key);
-        console.log("LocalStorage", "get", key, value);
-        return value;
+    * 生成完整的本地存储键名。
+    * 该方法会在传入的键名前添加一个前缀，以确保键名的唯一性。
+    * @param key - 原始的键名。
+    * @returns 带有前缀的完整键名。
+    */
+    getKeyName(key: string): string {
+        // 将 Id 前缀和传入的键名组合成完整的键名
+        return `${shujuid}_${key}`
     }
-
     /**
-     * 设置指定key值的记录
-     *
-     * @param key 待保存key（会覆盖现有的）
-     * @param value 待保存value
-     */
-    setItem(key: string, value: string): void {
-        console.log("LocalStorage", "set", key, value);
-        sys.localStorage.setItem(key, value);
+      * 设置一个简单类型的值到本地存储中。
+      */
+    setItem(key: string, value: shujuType): void {
+        // 如果值是布尔类型，将其转换为数字（0 或 1）
+        if (typeof value === "boolean") value = Number(value)
+        // 获取完整的键名，通过 Id 前缀和传入的键组合而成
+        const keyName: string = this.getKeyName(key)
+        // 将值转换为字符串并保存到本地存储中
+        sys.localStorage.setItem(keyName, String(value))
     }
-
     /**
-     * 移除指定key值
-     *
-     * @param key 待移除key
+       * 从本地存储中获取一个简单类型的值。
+       */
+    getItem(key: string, defaultValue?: shujuType): any {
+        // 获取完整的键名，通过 Id 前缀和传入的键组合而成
+        const keyName: string = this.getKeyName(key)
+        // 从本地存储中获取对应键的值
+        let value: string = sys.localStorage.getItem(keyName)
+        // 如果获取到值，则将其解析为合适的类型并返回
+        if (value) return JSON.parse(value)
+        // 返回默认值
+        return defaultValue
+    }
+    /**
+   * 从本地存储中获取一个对象或数组。
+   */
+    getObj(key: string, defaultValue?: Object | any[]): any {
+        // 获取完整的键名，通过 Id 前缀和传入的键组合而成
+        const keyName: string = this.getKeyName(key)
+        // 从本地存储中获取对应键的值
+        let str: string = sys.localStorage.getItem(keyName)
+        // 如果获取到值，则将其解析为对象或数组并返回
+        if (str) return JSON.parse(str)
+        // 返回默认值
+        return defaultValue
+    }
+    /**
+    * 将对象或数组保存到本地存储中。
+    */
+    setObj(key: string, obj: Object | any[], log: boolean = true): void {
+        // 将对象或数组转换为 JSON 字符串
+        let str: string = JSON.stringify(obj)
+        // 获取完整的键名，通过 Id 前缀和传入的键组合而成
+        const keyName: string = this.getKeyName(key)
+        // 将 JSON 字符串保存到本地存储中
+        sys.localStorage.setItem(keyName, str)
+    }
+    /**
+     * 清除本地存储中的所有数据。
+     * 该方法会调用 sys.localStorage.clear() 来移除本地存储中的所有键值对。
      */
-    removeItem(key: string) {
-        sys.localStorage.removeItem(key);
+    clear(): void {
+        // 清除本地存储中的所有数据
+        sys.localStorage.clear()
+    }
+    /**
+   * 从本地存储中移除指定键的值。
+   */
+    removeItem(key: string): void {
+        // 获取完整的键名，通过 Id 前缀和传入的键组合而成
+        const keyName: string = this.getKeyName(key)
+        // 从本地存储中移除对应完整键名的值
+        sys.localStorage.removeItem(keyName)
     }
 }

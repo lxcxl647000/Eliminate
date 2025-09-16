@@ -16,15 +16,20 @@ export default class BootPanel extends PanelComponent {
 
     show(option: PanelShowOption): void {
         option.onShowed();
-        this._initGame();
+        this._init();
     }
 
     hide(option: PanelHideOption): void {
         option.onHided();
     }
 
-    private async _initGame() {
+    private _init() {
+        // 初始化平台//
+        qc.platform.init();
+        this._initGame();
+    }
 
+    private async _initGame() {
         this._onLoadProgressChanged(0.5, "加载游戏资源...");
         await qc.panelRouter.loadAsync(PanelConfigs.mainPanel);
 
