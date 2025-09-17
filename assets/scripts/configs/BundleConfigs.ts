@@ -3,7 +3,6 @@
  *
  */
 export const BundleConfigs = {
-    audioBundle: "audioBundle",
     gameBundle: "gameBundle",
     mainBundle: "mainBundle",
     bootBundle: "bootBundle",

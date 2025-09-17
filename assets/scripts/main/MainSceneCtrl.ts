@@ -20,7 +20,6 @@ export default class MainSceneCtrl extends Component {
         // 加载 Bundle
         await AssetLoader.loadBundle(BundleConfigs.bootBundle);
         await AssetLoader.loadBundle(BundleConfigs.commonBundle);
-        await AssetLoader.loadBundle(BundleConfigs.audioBundle);
         await AssetLoader.loadBundle(BundleConfigs.gameBundle);
         await AssetLoader.loadBundle(BundleConfigs.mainBundle);
 
