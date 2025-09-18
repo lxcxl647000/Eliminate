@@ -1,26 +1,32 @@
-import { _decorator, Component, Node, Vec2 } from "cc";
+import { _decorator, Node, Vec2 } from "cc";
 import GameModel from "../../game/Model/GameModel";
 import GameCellModel, { Command } from "../../game/Model/GameCellModel";
 import GameGridView from "./GameGridView";
+import { PanelComponent, PanelHideOption, PanelShowOption } from "../../framework/lib/router/PanelComponent";
 
 const { ccclass, property } = _decorator;
 
 @ccclass
-export default class GamePanel extends Component {
-    @property(Node)
-    grid: Node = null;
+export default class GamePanel extends PanelComponent {
+    show(option: PanelShowOption): void {
+        option.onShowed();
+    }
+    hide(option: PanelHideOption): void {
+        option.onHided();
+    }
+    @property(GameGridView)
+    grid: GameGridView = null;
 
-    @property(Node)
-    audioButton: Node = null;
     private gameModel: GameModel = null;
 
     onLoad(): void {
         this.gameModel = new GameModel();
         this.gameModel.init(4);
+    }
 
-        const gridScript = this.grid.getComponent(GameGridView);
-        gridScript.setController(this);
-        gridScript.initWithCellModels(this.gameModel.getCells());
+    protected onEnable(): void {
+        this.grid.setController(this);
+        this.grid.initWithCellModels(this.gameModel.getCells());
     }
 
     selectCell(pos: Vec2): [GameCellModel[], Command[]] {

@@ -27,9 +27,9 @@ export class MainPanel extends PanelComponent {
 
     testBtn2() {
         qc.panelRouter.showPanel({
-            panel: PanelConfigs.testPanel,
+            panel: PanelConfigs.gamePanel,
             onShowed: () => {
-                console.log('this is a test-----2222');
+
             },
         });
     }

@@ -30,25 +30,29 @@ export default class BootPanel extends PanelComponent {
     }
 
     private async _initGame() {
-        this._onLoadProgressChanged(0.5, "加载游戏资源...");
+        this._onLoadProgressChanged(0.3, "加载游戏资源...");
         await qc.panelRouter.loadAsync(PanelConfigs.mainPanel);
+        this._onLoadProgressChanged(.7, "加载游戏资源...");
+        await qc.panelRouter.loadAsync(PanelConfigs.gamePanel);
 
         // 打开主界面
         this._onLoadProgressChanged(1.0);
-        qc.panelRouter.show({
-            panel: PanelConfigs.mainPanel,
-            onShowed: () => {
-                // 主界面打开完毕之后，隐藏并清理启动页面板相关资源（因为后续不会在用到）
-                qc.panelRouter.hide({
-                    panel: PanelConfigs.bootPanel,
-                    onHided: () => {
-                        qc.panelRouter.destroy({
-                            panel: PanelConfigs.bootPanel,
-                        });
-                    },
-                });
-            },
-        });
+        this.scheduleOnce(() => {
+            qc.panelRouter.show({
+                panel: PanelConfigs.mainPanel,
+                onShowed: () => {
+                    // 主界面打开完毕之后，隐藏并清理启动页面板相关资源（因为后续不会在用到）
+                    qc.panelRouter.hide({
+                        panel: PanelConfigs.bootPanel,
+                        onHided: () => {
+                            qc.panelRouter.destroy({
+                                panel: PanelConfigs.bootPanel,
+                            });
+                        },
+                    });
+                },
+            });
+        }, .3);
     }
 
     /**

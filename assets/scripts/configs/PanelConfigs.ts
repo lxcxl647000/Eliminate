@@ -38,6 +38,14 @@ export const PanelConfigs = {
         layerZIndex: PanelLayerEnum.UILayer,
     },
 
+    /**
+     * 游戏界面
+     */
+    gamePanel: <PanelConfig>{
+        prefabPath: `${BundleConfigs.gameBundle}/prefabs/panel/GamePanel`,
+        layerZIndex: PanelLayerEnum.UILayer,
+    },
+
     // ///////////////////////////////////////////////////////
     // 弹窗层级
 

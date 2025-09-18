@@ -1,6 +1,5 @@
 import cloud from '@tbmp/mp-cloud-sdk';
 import { baseConfig } from '../../../configs/baseConfig';
-import { qc } from '../../qc';
 
 export class tbCloudMgr {
     private static _instance: tbCloudMgr;
@@ -13,13 +12,7 @@ export class tbCloudMgr {
     }
     public init() {
         console.log('appid : === ' + baseConfig.appid);
-        let userId = qc.storage.getItem('userId');
-        if (userId) {
-            console.log('userid : === ' + userId);
-            baseConfig.userId = userId;
-        }
-        if (!this._cloudObject) {
-            // this._cloudObject = new cloud.Cloud();
+        if (!this._cloudObject && cloud['Cloud']) {
             this._cloudObject = new cloud['Cloud']();
             try {
                 this._cloudObject.init({
@@ -50,8 +43,7 @@ export class tbCloudMgr {
             exts: {
                 cloudAppId: "57216",
                 timeout: 4000,
-                domain: "https://mobiletest.yundps.com"
-                // domain: "https://mobile.yundps.com"
+                domain: baseConfig.emptyAppDomain
             }
         };
         console.log("请求配置:", JSON.stringify(config, null, 2));
@@ -59,8 +51,6 @@ export class tbCloudMgr {
             const result = await this._cloudObject.application.httpRequest(config);
             console.log("请求结果:", JSON.stringify(result, null, 2));
             let res = JSON.parse(result);
-            qc.storage.setItem('token', res.token);
-            qc.storage.setItem('userId', res.user_id);
             console.log('userid : === ' + res.user_id);
             baseConfig.token = res.token;
             baseConfig.userId = res.user_id;
