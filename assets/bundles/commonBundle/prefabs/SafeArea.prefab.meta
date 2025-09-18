@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "c80c8fdb-6c59-44fe-bd67-8d8a98ef52d5",
+  "uuid": "bcea0fc1-1ad8-4789-a91a-b033977934e5",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Crush"
+    "syncNodeName": "SafeArea"
   }
 }
